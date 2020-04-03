@@ -1,0 +1,29 @@
+#import urllib.request
+from urllib import request
+import re 
+import random
+url = r"  http://www.baidu.com/    "
+#request自动创建请求,反爬虫机制
+#通过判断用户是否是游览器访问，爬虫通过urllib里面的机制访问
+#，解决方法：可以通过伪游览器访问
+#改进：随机生成user-agent，防止阻拦
+agent1= "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_8; en-us) AppleWebKit/534.50 (KHTML, like Gecko) Version/5.1 Safari/534.50"
+agent2="Mozilla/5.0 (Windows NT 6.1; WOW64; rv:7.0a1) Gecko/20110623 Firefox/7.0a1 Fennec/7.0a1  "
+agent3=" Mozilla/5.0 (Linux; U; Android 3.0; en-us; Xoom Build/HRI39) AppleWebKit/534.1(KHTML, like Gecko) Version/4.0 Safari/534.13  "
+agent4="Mozilla/5.0 (iPhone; U; CPU iPhone OS 4_0 like Mac OS X; en-us) AppleWebKit/532.9 (KHTML, like Gecko) Version/4.0.5 Mobile/8A293 Safari/6531.22.7"
+agent5 = "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0"
+list1=[agent1,agent2, agent3, agent4,agent5]
+agent =random.choice(list1)
+print(agent)
+header ={ 
+ "user-agent":agent
+
+}
+
+req = request.Request(url,headers = header)
+reponse =request.urlopen(req).read(). decode() #1[]写入多余的urllib导致运行错误 #decode解码
+pat = r"<title>(.*?)</title>"#通过正则表达式进行数据清洗
+data = re.findall(pat,reponse)
+print( data[0])#此方式得到的是list类型的
+#，因为有[] 用print（type（data））可以得到，去掉括号使用data[0]
+ 

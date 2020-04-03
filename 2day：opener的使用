@@ -1,0 +1,26 @@
+#介绍opener
+#urllib2.urlopen()函数不支持验证、cookie或者其它HTTP高级功能。要支持这些功能，
+#必须使用build_opener()函数创建自定义Opener对象。
+#通常情况下我们使用默认的opener就是urlopen
+#.Handles：
+#Openers使用处理器handles，所有的“繁重”工作由handlers处理。
+#每个handlers知道如何通过特定协议打开URLs，或者如何处理URL打开时的各个方面。
+from urllib import request 
+#创建自定义处理器对象，专门处理HTTP请求的对象
+http_hander = request.HTTPHandler()
+opener = request.build_opener(http_hander)
+#创建自定义请求对象
+req = request.Request("http://www.baidu.com")
+#如何解决仅发送一次请求的问题？
+#答：可以把opener设置为全局变量，不管熟urllib还是自定义的opener都可以发送请求
+#install_opener用来创建（全局）默认opener。这个表示调用urlopen将使用你安装的opener
+request.install_opener(opener)
+
+#传入参数req
+reponse= request.urlopen(req).read()
+
+
+#发送请求，获取相应
+print(reponse  )
+
+
